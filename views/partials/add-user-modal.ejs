@@ -12,21 +12,21 @@
         id="add-user-form"
       >
         <input type="text" placeholder="enter name" name="name" />
-        <p class="error name-error">This is error</p>
+        <p class="error name-error"></p>
 
         <input type="text" placeholder="enter email" name="email" />
-        <p class="error email-error">This is error</p>
+        <p class="error email-error"></p>
 
         <input type="text" placeholder="enter mobile" name="mobile" />
-        <p class="error mobile-error">This is error</p>
+        <p class="error mobile-error"></p>
 
         <input type="password" placeholder="enter password" name="password" />
-        <p class="error password-error">This is error</p>
+        <p class="error password-error"></p>
 
         <input type="file" name="avatar" />
-        <p class="error avatar-error">This is error</p>
+        <p class="error avatar-error"></p>
 
-        <p class="error common-error">This is error</p>
+        <p class="error common-error"></p>
 
         <input type="submit" value="Submit" />
       </form>
@@ -40,8 +40,9 @@
   // success toast
   const successToast = Toastify({
     text: "User was added successfully! Reloading the list...",
-    duration: 3000,
+    duration: 1000,
   });
+
   function closeModal() {
     modal.style.display = "none";
   }
@@ -53,7 +54,7 @@
   form.onsubmit = async function (event) {
     event.preventDefault();
 
-    // clear the errors first
+    // clear errors first
     const errorPlaceholders = document.querySelectorAll("p.error");
     for (let i = 0; i < errorPlaceholders.length; i++) {
       errorPlaceholders[i].style.display = "none";
@@ -75,6 +76,7 @@
       body: formData,
     });
 
+    // get response
     let result = await response.json();
 
     // handle error and response
@@ -84,7 +86,7 @@
         // add error class to all inputs
         form[fieldName].classList.add("error");
 
-        // set all error placeholder (p tag) textContent
+        // set all error placeholders (p tag) textContent
         const errorPlaceholder = document.querySelector(`.${fieldName}-error`);
         errorPlaceholder.textContent = result.errors[fieldName].msg;
 
