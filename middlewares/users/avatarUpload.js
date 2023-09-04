@@ -24,3 +24,6 @@ function avatarUpload(req, res, next) {
     }
   });
 }
+
+// export
+module.exports = avatarUpload;

@@ -21,6 +21,7 @@ async function getUsers(req, res, next) {
 // add user
 async function addUser(res, req, next) {
   let newUser;
+  console.log(req.body);
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   if (req.files && req.files.length > 0) {
