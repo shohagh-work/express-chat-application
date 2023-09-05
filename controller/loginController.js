@@ -72,8 +72,14 @@ async function login(req, res, next) {
 }
 
 // logout
+function logout(req, res) {
+  res.clearCookie(process.env.COOKIE_NAME);
+  res.send("logged out");
+}
 
 // exports
 module.exports = {
   getLogin,
+  login,
+  logout,
 };
