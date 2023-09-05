@@ -5,7 +5,6 @@ const createError = require("http-errors");
 
 // internal imports
 const User = require("../models/People");
-const { isValidObjectId } = require("mongoose");
 
 // get login page
 function getLogin(req, res, next) {
