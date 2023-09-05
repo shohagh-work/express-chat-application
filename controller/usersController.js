@@ -6,7 +6,7 @@ const path = require("path");
 // internal imports
 const User = require("../models/People");
 
-// get user
+// get users page
 async function getUsers(req, res, next) {
   try {
     const users = await User.find();
@@ -19,9 +19,8 @@ async function getUsers(req, res, next) {
 }
 
 // add user
-async function addUser(res, req, next) {
+async function addUser(req, res, next) {
   let newUser;
-  console.log(req.body);
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   if (req.files && req.files.length > 0) {
@@ -44,7 +43,7 @@ async function addUser(res, req, next) {
       message: "User was added successfully!",
     });
   } catch (err) {
-    res.status(200).json({
+    res.status(500).json({
       errors: {
         common: {
           msg: "Unknown error occured!",
@@ -75,7 +74,7 @@ async function removeUser(req, res, next) {
       message: "User was removed successfully!",
     });
   } catch (err) {
-    res.status(200).json({
+    res.status(500).json({
       errors: {
         common: {
           msg: "Could not delete the user!",
@@ -85,7 +84,6 @@ async function removeUser(req, res, next) {
   }
 }
 
-// exports
 module.exports = {
   getUsers,
   addUser,
