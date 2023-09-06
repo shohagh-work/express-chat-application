@@ -13,16 +13,18 @@ const {
   addUserValidators,
   addUserValidationHandler,
 } = require("../middlewares/users/userValidators");
+const { checkLogin } = require("../middlewares/common/checkLogin");
 
 // initialization
 const router = express.Router();
 
 // user page
-router.get("/", decorateHtmlResponse("Users"), getUsers);
+router.get("/", decorateHtmlResponse("Users"),checkLogin, getUsers);
 
 // add user
 router.post(
   "/",
+  checkLogin,
   avatarUpload,
   addUserValidators,
   addUserValidationHandler,
