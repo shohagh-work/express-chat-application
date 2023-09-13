@@ -101,7 +101,17 @@ async function addConversation(req, res, next) {
 }
 
 // get messages of a conversation
-async function getMessage(req, re)
+async function getMessages(req, res, next) {
+  try {
+    const messages = await Message.find({
+      conversation_id: req.params.conversation_id,
+    }).sort("-createdAt");
+
+    const { participant } = await Conversation.findById(
+      req.params.conversation_id
+    );
+  } catch (err) {}
+}
 
 // send new messages
 
