@@ -1,9 +1,11 @@
 // external imports
 const express = require("express");
+const http = require("http");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const moment = require("moment");
 
 // internal imports
 const loginRouter = require("./router/loginRouter");
@@ -16,7 +18,15 @@ const {
 
 // app initialization
 const app = express();
+const server = http.createServer(app);
 dotenv.config();
+
+// socket creator
+const io = require("socket.io")(server);
+global.io = io;
+
+// set comment as app locals
+app.locals.moment = moment;
 
 // database connection
 mongoose
