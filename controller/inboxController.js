@@ -110,10 +110,63 @@ async function getMessages(req, res, next) {
     const { participant } = await Conversation.findById(
       req.params.conversation_id
     );
-  } catch (err) {}
+
+    res.status(200).json({
+      data: {
+        messages: messages,
+        participant,
+      },
+      user: req.user.userid,
+      conversation_id: req.params.conversation_id,
+    });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Unknown error occured!",
+        },
+      },
+    });
+  }
 }
 
 // send new messages
+async function sendMessage(req, res, next) {
+  if (req.body.message || (req.files && req.files.length > 0)) {
+    try {
+      // save message text/attachment in database
+      let attachments = null;
+
+      if (req.files && req.files.length > 0) {
+        attachments = [];
+
+        req.files.forEach((file) => {
+          attachments.push(file.filename);
+        });
+      }
+
+      const newMessage = new Message({
+        text: req.body.message,
+        attachment: attachments,
+        sender: {
+          id: req.user.userid,
+          name: req.user.username,
+          avatar: req.user.avatar || null,
+        },
+        receiver: {
+          id: req.body.receiverid,
+          name: req.body.receiverName,
+          avatar: req.body.avatar || null,
+        },
+        conversation_id: req.body.conversationId,
+      });
+
+      const result = await newMessage.save();
+
+      // emit socket event
+    } catch (err) {}
+  }
+}
 
 // exports
 module.exports = {
