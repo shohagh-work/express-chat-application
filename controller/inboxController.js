@@ -164,6 +164,7 @@ async function sendMessage(req, res, next) {
       const result = await newMessage.save();
 
       // emit socket event
+      io.emit("new_message", {});
     } catch (err) {}
   }
 }
