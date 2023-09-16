@@ -164,12 +164,47 @@ async function sendMessage(req, res, next) {
       const result = await newMessage.save();
 
       // emit socket event
-      io.emit("new_message", {});
-    } catch (err) {}
+      io.emit("new_message", {
+        message: {
+          conversation_id: req.body.conversationId,
+          sender: {
+            id: req.user.userid,
+            name: req.user.username,
+            avatar: req.user.avatar || null,
+          },
+          message: req.body.message,
+          attachment: attachments,
+          date_time: result.date_time,
+        },
+      });
+
+      res.status(200).json({
+        message: "Successful",
+        data: result,
+      });
+    } catch (err) {
+      res.status(500).json({
+        errors: {
+          common: {
+            msg: err.message,
+          },
+        },
+      });
+    }
+  } else {
+    res.status(500).json({
+      errors: {
+        common: "message text or attachment is required!",
+      },
+    });
   }
 }
 
 // exports
 module.exports = {
   getInbox,
+  searchUser,
+  addConversation,
+  getMessages,
+  sendMessage,
 };
