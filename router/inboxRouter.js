@@ -22,24 +22,14 @@ router.get("/", decorateHtmlResponse("Inbox"), checkLogin, getInbox);
 // search user for conversation
 router.post("/search", checkLogin, searchUser);
 
-// inbox page
-router.post(
-  "/conversation",
-  decorateHtmlResponse("Inbox"),
-  checkLogin,
-  getInbox
-);
+// addConversation
+router.post("/conversation", checkLogin, addConversation);
 
-// inbox page
-router.get(
-  "/messages/:conversation_id",
-  decorateHtmlResponse("Inbox"),
-  checkLogin,
-  getInbox
-);
+// getMessages
+router.get("/messages/:conversation_id", checkLogin, getMessages);
 
-// inbox page
-router.post("/message", decorateHtmlResponse("Inbox"), checkLogin, getInbox);
+// sendMessage
+router.post("/message", checkLogin, attachmentUpload, sendMessage);
 
 // exports
 module.exports = router;
